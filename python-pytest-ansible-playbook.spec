@@ -8,7 +8,7 @@ Summary:        Pytest fixture which runs given ansible playbook file
 
 License:        Apache 2.0
 URL:            https://gitlab.com/mbukatov/pytest-ansible-playbook
-Source0:        
+Source0:        %{pypi_name}-%{version}.tar.gz
 BuildArch:      noarch
  
 BuildRequires:  python-setuptools
