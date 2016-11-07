@@ -2,13 +2,13 @@
 %global pypi_name mrglog
 
 Name:           python-%{pypi_name}
-Version:        0.1.0
+Version:        0.1.1
 Release:        1%{?dist}
 Summary:        MRG log module
 
 License:        Apache 2.0
 URL:            https://github.com/ltrilety/mrglog
-Source0:        mrglog-0.1.0.dev1.tar.gz
+Source0:        %{pypi_name}-%{version}.tar.gz
 BuildArch:      noarch
  
 BuildRequires:  python-setuptools
@@ -76,5 +76,5 @@ ln -sf %{_bindir}/mrglog_demo.py-2 %{buildroot}/%{_bindir}/mrglog_demo.py-%{pyth
 %{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %changelog
-* Fri Nov 04 2016 Martin Bukatovic <mbukatov@redhat.com> - 0.1.0-1
+* Mon Nov 07 2016 Martin Bukatovic <mbukatov@redhat.com> - 0.1.1-1
 - Initial package.
