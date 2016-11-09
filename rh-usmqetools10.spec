@@ -81,6 +81,12 @@ chmod a+x h2m_helper
 
 # generate the man page
 help2man -N --section 7 ./h2m_helper -o %{scl_name}.7
+# Fix single quotes in man page. See RHBZ#1219531
+#
+# http://lists.gnu.org/archive/html/groff/2008-06/msg00001.html suggests that
+# using "'" for quotes is correct, but the current implementation of man in 6
+# mangles it when rendering.
+sed -i "s/'/\\\\(aq/g" %{scl_name}.7
 
 %install
 rm -rf %{buildroot}
