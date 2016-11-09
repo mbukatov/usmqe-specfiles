@@ -4,7 +4,18 @@
 %global scl_name_version 10
 %global scl %{scl_name_prefix}%{scl_name_base}%{scl_name_version}
 
+## General notes about python3x SCL packaging
+# - the names of packages are NOT prefixed with 'python3-' (e.g. are the same as in Fedora)
+# - the names of binaries of Python 3 itself are both python{-debug,...} and python3{-debug,...}
+#   so both are usable in shebangs, the non-versioned binaries are preferred.
+# - the names of other binaries are NOT prefixed with 'python3-'.
+# - there are both macros in '3' variant and non-versioned variant, e.g. both %%{__python}
+#   and %%{__python3} are available
+
+%global nfsmountable 1
+
 %scl_package %scl
+%global _turn_off_bytecompile 1
 
 %global install_scl 1
 
