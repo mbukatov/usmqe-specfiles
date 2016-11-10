@@ -1,0 +1,10 @@
+Package %{scl_name} provides usmqe tools delivered as a Dependent Software
+Collection of rh-python35. For more information about Software Collections, see
+the scl(1) man page.
+
+Usage: scl enable %{scl} 'python'
+
+Software Collections allow you to build and execute applications
+which are not located in the filesystem root hierarchy,
+but are stored in an alternative location, which is %{_scl_root}
+in case of the %{scl_name} collection.
