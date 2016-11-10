@@ -28,7 +28,7 @@
 
 # The directory for site packages for this Software Collection
 # TODO: can I use just %{scl} instead of rh-usmqetools10 here?
-%global rh-usmqetools10_sitelib %(echo %{python35python_sitelib} | sed 's|%{scl_python}|%{scl}|')
+%global usmqetools10_sitelib %(echo %{python35python_sitelib} | sed 's|%{scl_python}|%{scl}|')
 
 ## General notes about python3x SCL packaging
 # - the names of packages are NOT prefixed with 'python3-' (e.g. are the same as in Fedora)
@@ -124,7 +124,7 @@ sed -i "s/'/\\\\(aq/g" %{scl_name}.7
 # Create the enable scriptlet
 cat >> %{buildroot}%{_scl_scripts}/enable << EOF
 . scl_source enable %{scl_python}
-export PYTHONPATH=%{rh-usmqetools10_sitelib}\${PYTHONPATH:+:\${PYTHONPATH}}
+export PYTHONPATH=%{usmqetools10_sitelib}\${PYTHONPATH:+:\${PYTHONPATH}}
 export PATH=%{_bindir}\${PATH:+:\${PATH}}
 export LD_LIBRARY_PATH=%{_libdir}\${LD_LIBRARY_PATH:+:\${LD_LIBRARY_PATH}}
 export MANPATH=%{_mandir}:\${MANPATH}
@@ -132,7 +132,7 @@ export PKG_CONFIG_PATH=%{_libdir}/pkgconfig\${PKG_CONFIG_PATH:+:\${PKG_CONFIG_PA
 export XDG_DATA_DIRS="%{_datadir}:\${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
 EOF
 
-mkdir -p %{buildroot}%{rh-usmqetools10_sitelib}
+mkdir -p %{buildroot}%{usmqetools10_sitelib}
 
 # - Enable Software Collection-specific bytecompilation macros from
 #   the python35-python-devel package.
@@ -146,8 +146,8 @@ cat >> %{buildroot}%{_root_sysconfdir}/rpm/macros.%{scl}-config << EOF
 %%global __python_requires %%python35_python_requires
 %%global __python_provides %%python35_python_provides
 %%global __python %python35__python
-%%global python_sitelib %{rh-usmqetools10_sitelib}
-%%global python3_sitelib %{rh-usmqetools10_sitelib}
+%%global python_sitelib %{usmqetools10_sitelib}
+%%global python3_sitelib %{usmqetools10_sitelib}
 }
 EOF
 
@@ -171,7 +171,7 @@ install -m 644 %{scl_name}.7 %{buildroot}%{_mandir}/man7/%{scl_name}.7
 %endif
 %doc README LICENSE
 %scl_files
-%{rh-usmqetools10_sitelib}
+%{usmqetools10_sitelib}
 %{_mandir}/man7/%{scl_name}.*
 
 %files build
