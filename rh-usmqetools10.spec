@@ -2,6 +2,9 @@
 #  * rh-python35 metapackage spec file
 #  * softwarecollections.org/en/docs/guide (section 4.1.1. Using an scldevel
 #    Subpackage in a Dependent Software Collection)
+#  * https://developerblog.redhat.com/2014/12/04/add-packages-to-python-2-7-software-collection
+#  * section 4.2. Extending the python27 and rh-python34 Software Collections
+#    from https://access.redhat.com/documentation/en-US/Red_Hat_Software_Collections/2/html-single/Packaging_Guide/index.html#chap-Extending_Red_Hat_Software_Collections
 
 %global scl_name_prefix rh-
 %global scl_name_base usmqetools
@@ -14,6 +17,18 @@
 # will be used when python35-scldevel is not in the buildroot
 %{!?scl_python:%global scl_python python35}
 %{!?scl_prefix_python:%global scl_prefix_python %{scl_python}-}
+
+# Only for this build, you need to override default __os_install_post,
+# because the default one would find /opt/.../lib/python3.5/ and try
+# to bytecompile with the system /usr/bin/python3.5
+# TODO: should I use %{scl_python} or %{scl_no_vendor} here?
+%global __os_install_post %{%{scl_no_vendor}_os_install_post}
+# Similarly, override __python_requires for automatic dependency generator
+%global __python_requires %{%{scl_no_vendor}_python_requires}
+
+# The directory for site packages for this Software Collection
+# TODO: can I use just %{scl} instead of rh-usmqetools10 here?
+%global rh-usmqetools10_sitelib %(echo %{python35python_sitelib} | sed 's|%{scl_python}|%{scl}|')
 
 ## General notes about python3x SCL packaging
 # - the names of packages are NOT prefixed with 'python3-' (e.g. are the same as in Fedora)
@@ -42,6 +57,9 @@ Source2: LICENSE
 BuildRequires: help2man
 BuildRequires: scl-utils-build
 BuildRequires: %{scl_prefix_python}scldevel
+# Require python35-python-devel, we will need macros from that package
+BuildRequires: %{scl_prefix_python}python-devel
+Requires: %{scl_prefix}python-versiontools
 %if 0%{?install_scl}
 # Put your scl requires here
 %endif
@@ -102,17 +120,36 @@ help2man -N --section 7 ./h2m_helper -o %{scl_name}.7
 sed -i "s/'/\\\\(aq/g" %{scl_name}.7
 
 %install
-rm -rf %{buildroot}
-mkdir -p %{buildroot}%{_scl_scripts}/root
-mkdir -p %{buildroot}%{_root_prefix}/lib/rpm/redhat
+%scl_install
+# Create the enable scriptlet
 cat >> %{buildroot}%{_scl_scripts}/enable << EOF
+. scl_source enable %{scl_python}
+export PYTHONPATH=%{rh-usmqetools10_sitelib}\${PYTHONPATH:+:\${PYTHONPATH}}
 export PATH=%{_bindir}\${PATH:+:\${PATH}}
 export LD_LIBRARY_PATH=%{_libdir}\${LD_LIBRARY_PATH:+:\${LD_LIBRARY_PATH}}
 export MANPATH=%{_mandir}:\${MANPATH}
 export PKG_CONFIG_PATH=%{_libdir}/pkgconfig\${PKG_CONFIG_PATH:+:\${PKG_CONFIG_PATH}}
 export XDG_DATA_DIRS="%{_datadir}:\${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
 EOF
-%scl_install
+
+mkdir -p %{buildroot}%{rh-usmqetools10_sitelib}
+
+# - Enable Software Collection-specific bytecompilation macros from
+#   the python35-python-devel package.
+# - Also override the %%python_sitelib macro to point to the rh-usmqetools10
+#   Software Collection.
+# - If you have architecture-dependent packages, you will also need to override
+#   the %%python_sitearch macro.
+
+cat >> %{buildroot}%{_root_sysconfdir}/rpm/macros.%{scl}-config << EOF
+%%scl_package_override() %%{expand:%{?python35_os_install_post:%%global __os_install_post %%python35_os_install_post}
+%%global __python_requires %%python35_python_requires
+%%global __python_provides %%python35_python_provides
+%%global __python %python35__python
+%%global python_sitelib %rh-usmqetools10_sitelib
+%%global python3_sitelib %rh-usmqetools10_sitelib
+}
+EOF
 
 
 # Create the scldevel subpackage macros
@@ -134,6 +171,7 @@ install -m 644 %{scl_name}.7 %{buildroot}%{_mandir}/man7/%{scl_name}.7
 %endif
 %doc README LICENSE
 %scl_files
+%rh-usmqetools10_sitelib
 %{_mandir}/man7/%{scl_name}.*
 
 %files build
