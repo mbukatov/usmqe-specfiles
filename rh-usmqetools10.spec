@@ -146,8 +146,8 @@ cat >> %{buildroot}%{_root_sysconfdir}/rpm/macros.%{scl}-config << EOF
 %%global __python_requires %%python35_python_requires
 %%global __python_provides %%python35_python_provides
 %%global __python %python35__python
-%%global python_sitelib %rh-usmqetools10_sitelib
-%%global python3_sitelib %rh-usmqetools10_sitelib
+%%global python_sitelib %{rh-usmqetools10_sitelib}
+%%global python3_sitelib %{rh-usmqetools10_sitelib}
 }
 EOF
 
@@ -171,7 +171,7 @@ install -m 644 %{scl_name}.7 %{buildroot}%{_mandir}/man7/%{scl_name}.7
 %endif
 %doc README LICENSE
 %scl_files
-%rh-usmqetools10_sitelib
+%{rh-usmqetools10_sitelib}
 %{_mandir}/man7/%{scl_name}.*
 
 %files build
