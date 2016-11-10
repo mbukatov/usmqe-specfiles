@@ -22,9 +22,9 @@
 # because the default one would find /opt/.../lib/python3.5/ and try
 # to bytecompile with the system /usr/bin/python3.5
 # TODO: should I use %{scl_python} or %{scl_no_vendor} here?
-%global __os_install_post %{%{scl_no_vendor}_os_install_post}
+%global __os_install_post %{%{scl_python}_os_install_post}
 # Similarly, override __python_requires for automatic dependency generator
-%global __python_requires %{%{scl_no_vendor}_python_requires}
+%global __python_requires %{%{scl_python}_python_requires}
 
 # The directory for site packages for this Software Collection
 # TODO: can I use just %{scl} instead of rh-usmqetools10 here?
