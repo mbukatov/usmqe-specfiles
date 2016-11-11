@@ -51,7 +51,7 @@ Summary: Package that installs %scl
 Name: %scl_name
 Version: 1.0
 Release: 1%{?dist}
-License: GPLv2+
+License: Apache 2.0
 Source1: README
 Source2: LICENSE
 BuildRequires: help2man
