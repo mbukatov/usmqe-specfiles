@@ -35,7 +35,7 @@ rm -rf %{pypi_name}.egg-info
 
 %install
 %{?scl:scl enable %{scl} - << \EOF}
-%{__python} setup.py install --skip-build --root %{buildroot} --install-purelib %{python_sitelib}
+%{__python} setup.py install --skip-build --root %{buildroot} --install-purelib %{python_sitelib} --install-scripts %{python_sitelib}/../../../bin
 %{?scl:EOF}
 
 %files
