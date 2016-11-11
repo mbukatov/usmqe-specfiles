@@ -23,7 +23,6 @@ BuildRequires:  %{?scl_prefix_python}python-setuptools
 %description
 
 %prep
-# TODO: use %setup -q -n instead?
 %autosetup -n %{pypi_name}-%{version}
 # Remove bundled egg-info
 rm -rf %{pypi_name}.egg-info
