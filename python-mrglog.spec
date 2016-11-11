@@ -8,7 +8,7 @@ Summary:        MRG log module
 
 License:        Apache 2.0
 URL:            https://github.com/ltrilety/mrglog
-Source0:        
+Source0:        %{pypi_name}-%{version}.tar.gz
 BuildArch:      noarch
  
 BuildRequires:  python%{python3_pkgversion}-devel
