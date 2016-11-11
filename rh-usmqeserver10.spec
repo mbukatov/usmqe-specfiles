@@ -7,7 +7,7 @@
 #    from https://access.redhat.com/documentation/en-US/Red_Hat_Software_Collections/2/html-single/Packaging_Guide/index.html#chap-Extending_Red_Hat_Software_Collections
 
 %global scl_name_prefix rh-
-%global scl_name_base usmqetools
+%global scl_name_base usmqeserver
 %global scl_name_version 10
 %global scl %{scl_name_prefix}%{scl_name_base}%{scl_name_version}
 
@@ -27,8 +27,8 @@
 %global __python_requires %{python35_python_requires}
 
 # The directory for site packages for this Software Collection
-# TODO: can I use just %{scl} instead of rh-usmqetools10 here?
-%global usmqetools10_sitelib %(echo %{python35python_sitelib} | sed 's|%{scl_python}|%{scl}|')
+# TODO: can I use just %{scl} instead of rh-usmqeserver10 here?
+%global usmqeserver10_sitelib %(echo %{python35python_sitelib} | sed 's|%{scl_python}|%{scl}|')
 
 ## General notes about python3x SCL packaging
 # - the names of packages are NOT prefixed with 'python3-' (e.g. are the same as in Fedora)
@@ -124,7 +124,7 @@ sed -i "s/'/\\\\(aq/g" %{scl_name}.7
 # Create the enable scriptlet
 cat >> %{buildroot}%{_scl_scripts}/enable << EOF
 . scl_source enable %{scl_python}
-export PYTHONPATH=%{usmqetools10_sitelib}\${PYTHONPATH:+:\${PYTHONPATH}}
+export PYTHONPATH=%{usmqeserver10_sitelib}\${PYTHONPATH:+:\${PYTHONPATH}}
 export PATH=%{_bindir}\${PATH:+:\${PATH}}
 export LD_LIBRARY_PATH=%{_libdir}\${LD_LIBRARY_PATH:+:\${LD_LIBRARY_PATH}}
 export MANPATH=%{_mandir}:\${MANPATH}
@@ -132,11 +132,11 @@ export PKG_CONFIG_PATH=%{_libdir}/pkgconfig\${PKG_CONFIG_PATH:+:\${PKG_CONFIG_PA
 export XDG_DATA_DIRS="%{_datadir}:\${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
 EOF
 
-mkdir -p %{buildroot}%{usmqetools10_sitelib}
+mkdir -p %{buildroot}%{usmqeserver10_sitelib}
 
 # - Enable Software Collection-specific bytecompilation macros from
 #   the python35-python-devel package.
-# - Also override the %%python_sitelib macro to point to the rh-usmqetools10
+# - Also override the %%python_sitelib macro to point to the rh-usmqeserver10
 #   Software Collection.
 # - If you have architecture-dependent packages, you will also need to override
 #   the %%python_sitearch macro.
@@ -146,8 +146,8 @@ cat >> %{buildroot}%{_root_sysconfdir}/rpm/macros.%{scl}-config << EOF
 %%global __python_requires %%python35_python_requires
 %%global __python_provides %%python35_python_provides
 %%global __python %python35__python
-%%global python_sitelib %{usmqetools10_sitelib}
-%%global python3_sitelib %{usmqetools10_sitelib}
+%%global python_sitelib %{usmqeserver10_sitelib}
+%%global python3_sitelib %{usmqeserver10_sitelib}
 }
 EOF
 
@@ -171,7 +171,7 @@ install -m 644 %{scl_name}.7 %{buildroot}%{_mandir}/man7/%{scl_name}.7
 %endif
 %doc README LICENSE
 %scl_files
-%{usmqetools10_sitelib}
+%{usmqeserver10_sitelib}
 %{_mandir}/man7/%{scl_name}.*
 
 %files build

@@ -2,27 +2,27 @@
  USM QE Specfiles
 ==================
 
-Spec files of of USM QE tools packaged as a software collection extending
-standard `rh-python35`_ collection.
+Spec files of of USM QE server tools packaged as a software collection
+extending standard `rh-python35`_ collection.
 
 Creating new Software collection extending an existing one
 ==========================================================
 
 This is a quick overview of extending `rh-python35`_ software collection with
 another one (so called `dependent software collection`), which would contain
-packages with usm qe tools.
+packages with usm qe server tools.
 
 First of all, we need to come up with the proper name for new software
-collection. We are going to use ``rh-usmqetools10``, where:
+collection. We are going to use ``rh-usmqeserver10``, where:
 
 * scl name prefix: ``rh-`` is vendor (aka provider or organization) id
-* scl name base: ``usmqetools``
+* scl name base: ``usmqeserver``
 * scl name version: ``10`` (this stands for 1.0)
 
 Now let's generate initial specfile of soft. colleciton metapackage::
 
     $ cd ~/projects/usmqe-specfiles
-    $ spec2scl --meta-specfile rh-usmqetools10 > rh-usmqetools10.spec
+    $ spec2scl --meta-specfile rh-usmqeserver10 > rh-usmqeserver10.spec
 
 TODO: continue here
 

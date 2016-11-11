@@ -1,8 +1,11 @@
-Package %{scl_name} provides usmqe tools delivered as a Dependent Software
-Collection of rh-python35. For more information about Software Collections, see
-the scl(1) man page.
+Package %{scl_name} provides packages required for running usmqe integration
+tests delivered as a Dependent Software Collection of rh-python35. For more
+information about Software Collections, see the scl(1) man page.
 
-Usage: scl enable %{scl} 'python'
+Usage: scl enable %{scl} 'bash'
+
+The usmqe server is machine where usmqe integration tests are installed and
+executed.
 
 Software Collections allow you to build and execute applications
 which are not located in the filesystem root hierarchy,
