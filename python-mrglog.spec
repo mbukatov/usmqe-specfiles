@@ -44,7 +44,6 @@ rm -rf %{pypi_name}.egg-info
 %dir %{python_sitelib}/__pycache__/
 %{python_sitelib}/__pycache__/*
 %{python_sitelib}/%{pypi_name}.py
-%{python_sitelib}/%{pypi_name}
 %{python_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %changelog
